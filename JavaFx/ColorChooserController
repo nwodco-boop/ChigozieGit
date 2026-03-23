@@ -1,0 +1,87 @@
+package com.example.art;
+
+import javafx.fxml.FXML;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
+import javafx.scene.control.Slider;
+import javafx.scene.control.TextField;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
+
+public class ColorChooserController {
+
+    // GUI components
+    @FXML private Slider redSlider;
+    @FXML private Slider greenSlider;
+    @FXML private Slider blueSlider;
+    @FXML private Slider alphaSlider;
+
+    @FXML private TextField redTextField;
+    @FXML private TextField greenTextField;
+    @FXML private TextField blueTextField;
+    @FXML private TextField alphaTextField;
+
+    @FXML private Rectangle colorRectangle;
+
+    // Color values
+    private int red = 0;
+    private int green = 0;
+    private int blue = 0;
+    private double alpha = 1.0;
+
+    @FXML
+    public void initialize() {
+
+        // Bind text fields to slider values
+        redTextField.textProperty().bind(
+                redSlider.valueProperty().asString("%.0f"));
+        greenTextField.textProperty().bind(
+                greenSlider.valueProperty().asString("%.0f"));
+        blueTextField.textProperty().bind(
+                blueSlider.valueProperty().asString("%.0f"));
+        alphaTextField.textProperty().bind(
+                alphaSlider.valueProperty().asString("%.2f"));
+
+        // Add listeners
+        redSlider.valueProperty().addListener(new ChangeListener<Number>() {
+            @Override
+            public void changed(ObservableValue<? extends Number> ov,
+                                Number oldValue, Number newValue) {
+                red = newValue.intValue();
+                updateColor();
+            }
+        });
+
+        greenSlider.valueProperty().addListener(new ChangeListener<Number>() {
+            @Override
+            public void changed(ObservableValue<? extends Number> ov,
+                                Number oldValue, Number newValue) {
+                green = newValue.intValue();
+                updateColor();
+            }
+        });
+
+        blueSlider.valueProperty().addListener(new ChangeListener<Number>() {
+            @Override
+            public void changed(ObservableValue<? extends Number> ov,
+                                Number oldValue, Number newValue) {
+                blue = newValue.intValue();
+                updateColor();
+            }
+        });
+
+        alphaSlider.valueProperty().addListener(new ChangeListener<Number>() {
+            @Override
+            public void changed(ObservableValue<? extends Number> ov,
+                                Number oldValue, Number newValue) {
+                alpha = newValue.doubleValue();
+                updateColor();
+            }
+        });
+    }
+
+    // Helper method to update rectangle color
+    private void updateColor() {
+        colorRectangle.setFill(Color.rgb(red, green, blue, alpha));
+    }
+}
